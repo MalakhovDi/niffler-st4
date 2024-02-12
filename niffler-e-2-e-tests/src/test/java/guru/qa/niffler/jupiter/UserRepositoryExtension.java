@@ -15,11 +15,15 @@ public class UserRepositoryExtension implements TestInstancePostProcessor {
       if (field.getType().isAssignableFrom(UserRepository.class)) {
         String repositoryEnv = System.getProperty("repository", "jdbc");
         field.setAccessible(true);
+        UserRepository repository;
         switch (repositoryEnv) {
-          case "jdbc" -> field.set(o, new UserRepositoryJdbc());
-          case "sjdbc" -> field.set(o, new UserRepositorySJdbc());
+          case "jdbc" -> repository = new UserRepositoryJdbc();
+          case "sjdbc" -> repository = new UserRepositorySJdbc();
+          default -> throw new IllegalArgumentException("Unsupported repository environment: " + repositoryEnv);
+        }
+        field.set(o, repository);
         }
       }
     }
   }
-}
+

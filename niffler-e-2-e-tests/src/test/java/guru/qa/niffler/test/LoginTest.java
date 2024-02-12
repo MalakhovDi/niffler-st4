@@ -16,12 +16,12 @@ public class LoginTest extends BaseWebTest {
     private UserRepository userRepository;
 
     @Test
-    @UserDb(username = "Ivan", password = "12345", deleteAfterTest = true)
+    @UserDb(username = "Roman", password = "12345")
     void statisticShouldBeVisibleAfterLogin(UserAuthEntity userAuth) {
         welcomePage.open().clickLoginAndGoToLoginPage().loginInUser(
                 userAuth.getUsername(),
                 userAuth.getPassword()
-        ).statisticsSectionShouldExist();
+        ).verifyStatisticsSectionShouldExist();
     }
 
     @Test
@@ -36,7 +36,7 @@ public class LoginTest extends BaseWebTest {
     }
 
     @Test
-    @UserDb(username = "Vasya", password = "12345")
+    @UserDb(username = "Vladimir", password = "12345")
     public void shouldSetFirstAndSurName(UserAuthEntity userAuth) {
         welcomePage.open().clickLoginAndGoToLoginPage().loginInUser(
                 userAuth.getUsername(),

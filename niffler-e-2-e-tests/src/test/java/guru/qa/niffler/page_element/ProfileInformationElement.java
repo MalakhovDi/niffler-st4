@@ -8,15 +8,7 @@ import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
 public class ProfileInformationElement {
-    public ProfileInformationElement verifyProfileName(String username) {
-        profileName.shouldHave(text(username));
-        return this;
-    }
-
-    public ProfileInformationElement verifyDefaultCurrencyValue(CurrencyValues currencyValue) {
-        defaultCurrencyValue.shouldHave(text(currencyValue.toString()));
-        return this;
-    }    private final SelenideElement
+    private final SelenideElement
             container = $(".profile-content .main-content__section-avatar"),
             profileName = container.$("figcaption"),
             defaultCurrencyValue = container.$(withText("Currency")).parent().$("[class*='singleValue']"),
@@ -31,5 +23,13 @@ public class ProfileInformationElement {
         return this;
     }
 
+    public ProfileInformationElement verifyDefaultCurrencyValue(CurrencyValues currencyValue) {
+        defaultCurrencyValue.shouldHave(text(currencyValue.toString()));
+        return this;
+    }
 
+    public ProfileInformationElement verifyProfileName(String username) {
+        profileName.shouldHave(text(username));
+        return this;
+    }
 }
