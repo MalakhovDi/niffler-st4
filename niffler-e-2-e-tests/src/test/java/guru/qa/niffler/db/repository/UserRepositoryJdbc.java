@@ -280,9 +280,9 @@ public class UserRepositoryJdbc implements UserRepository {
                 authorityDeletePs.setObject(1, user.getId());
                 authorityDeletePs.executeUpdate();
 
-                for (Authority authority : Authority.values()) {
+                for (AuthorityEntity authority : user.getAuthorities()) {
                     authorityInsertPs.setObject(1, user.getId());
-                    authorityInsertPs.setString(2, authority.name());
+                    authorityInsertPs.setString(2, authority.getAuthority().name());
                     authorityInsertPs.addBatch();
                     authorityInsertPs.clearParameters();
                 }

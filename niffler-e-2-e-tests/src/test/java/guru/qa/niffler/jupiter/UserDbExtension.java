@@ -18,7 +18,6 @@ public class UserDbExtension implements BeforeEachCallback, ParameterResolver, A
             = ExtensionContext.Namespace.create(UserDbExtension.class);
     private static final String USER_AUTH_KEY = "userAuth";
     private static final String USER_KEY = "user";
-    private static final String DELETE_KEY = "deleteAfterTest";
     private final Faker faker = new Faker();
     private final UserRepository userRepository = new UserRepositoryJdbc();
 
@@ -29,18 +28,12 @@ public class UserDbExtension implements BeforeEachCallback, ParameterResolver, A
                 UserDb.class
         );
 
-        String userName = null;
-        String password = null;
-        boolean deleteAfterTest = false;
+        UserDb dbUserData = dbUser.get();
+        String userName = dbUserData.username().isEmpty() ? faker.name().firstName() : dbUserData.username();
+        String password = dbUserData.password().isEmpty()
+                ? String.valueOf(faker.number().numberBetween(10000, 99999))
+                : dbUserData.password();
 
-        if (dbUser.isPresent()) {
-            UserDb dbUserData = dbUser.get();
-            userName = dbUserData.username().isEmpty() ? faker.name().firstName() : dbUserData.username();
-            password = dbUserData.password().isEmpty()
-                    ? String.valueOf(faker.number().numberBetween(10000, 99999))
-                    : dbUserData.password();
-            deleteAfterTest = dbUserData.deleteAfterTest();
-        }
 
         UserAuthEntity userAuth = new UserAuthEntity();
         UserEntity user = new UserEntity();
@@ -68,7 +61,6 @@ public class UserDbExtension implements BeforeEachCallback, ParameterResolver, A
         Map<String, Object> userEntities = new HashMap<>();
         userEntities.put(USER_AUTH_KEY, userAuth);
         userEntities.put(USER_KEY, user);
-        userEntities.put(DELETE_KEY, deleteAfterTest);
 
         extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), userEntities);
     }
@@ -78,9 +70,7 @@ public class UserDbExtension implements BeforeEachCallback, ParameterResolver, A
         Map<String, Object> userEntities = (Map<String, Object>) extensionContext
                 .getStore(UserDbExtension.NAMESPACE).get(extensionContext.getUniqueId());
 
-        boolean needToDeleteUser = (boolean) userEntities.get(DELETE_KEY);
-
-        if (needToDeleteUser) {
+        if (extensionContext.getRequiredTestMethod().getAnnotation(UserDb.class).deleteAfterTest()) {
             UserAuthEntity userAuth = (UserAuthEntity) userEntities.get(USER_AUTH_KEY);
             UserEntity user = (UserEntity) userEntities.get(USER_KEY);
 

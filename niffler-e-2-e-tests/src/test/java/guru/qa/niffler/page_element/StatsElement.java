@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class StatsElement {
     private final SelenideElement statisticsSection = $(".main-content__section-stats");
 
-    public StatsElement statisticsSectionShouldExist() {
+    public StatsElement verifyStatisticsSectionShouldExist() {
         statisticsSection.should(appear);
         return this;
     }

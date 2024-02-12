@@ -55,8 +55,8 @@ public class MainPage {
     }
 
     @Step("Проверка наличия раздела Статистика")
-    public MainPage statisticsSectionShouldExist() {
-        statsElement.statisticsSectionShouldExist();
+    public MainPage verifyStatisticsSectionShouldExist() {
+        statsElement.verifyStatisticsSectionShouldExist();
         return this;
     }
 }
