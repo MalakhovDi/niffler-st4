@@ -2,9 +2,11 @@ package guru.qa.niffler.test;
 
 import guru.qa.niffler.jupiter.annotation.GenerateCategory;
 import guru.qa.niffler.jupiter.annotation.GenerateSpend;
+import guru.qa.niffler.jupiter.annotation.GenerateSpendWithCategory;
 import guru.qa.niffler.model.CurrencyValues;
 import guru.qa.niffler.model.SpendJson;
 import io.qameta.allure.Feature;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @Feature("Spendings")
@@ -23,6 +25,22 @@ public class SpendingTest extends BaseWebTest {
     void spendingShouldBeDeletedByButtonDeleteSpending(SpendJson spend) {
         welcomePage.open().clickLoginAndGoToLoginPage()
                 .loginInUser("duck", "12345")
+                .deleteSpendingByButtonDelete(spend.description())
+                .verifyEmptyListOfSpendings();
+    }
+
+    @GenerateSpendWithCategory(
+            username = "bee",
+            category = "Путешествия",
+            description = "Тайланд",
+            amount = 200000.00,
+            currency = CurrencyValues.RUB
+    )
+    @Test
+    @DisplayName("Пользователь может удалить Spending")
+    void spendingShouldBeDeletedByButtonDeleteSpendingRest(SpendJson spend) {
+        welcomePage.open().clickLoginAndGoToLoginPage()
+                .loginInUser("bee", "12345")
                 .deleteSpendingByButtonDelete(spend.description())
                 .verifyEmptyListOfSpendings();
     }
