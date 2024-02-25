@@ -9,7 +9,7 @@ import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
-public class WelcomePage {
+public class WelcomePage extends BasePage<WelcomePage> {
     private static final String MAIN_URL = Config.getInstance().frontUrl();
     private final SelenideElement
             loginButton = $("[href*='redirect']"),
@@ -17,7 +17,7 @@ public class WelcomePage {
             title = $(withText("Welcome to magic journey with Niffler. The coin keeper")),
             logo = $("img.main__logo");
 
-
+    @Override
     @Step("Ожидание загрузки welcome страницы приложения")
     public WelcomePage waitUntilLoaded() {
         title.should(appear);
@@ -42,5 +42,4 @@ public class WelcomePage {
         registerButton.click();
         return new RegisterPage().waitUntilLoaded();
     }
-
 }

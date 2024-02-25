@@ -15,6 +15,7 @@ public class LoginPage extends BasePage<LoginPage> {
             passwordInput = $("[name='password']"),
             signInButton = $("[type='submit']");
 
+    @Override
     @Step("Ожидание загрузки Login страницы приложения")
     public LoginPage waitUntilLoaded() {
         subTitle.should(appear);

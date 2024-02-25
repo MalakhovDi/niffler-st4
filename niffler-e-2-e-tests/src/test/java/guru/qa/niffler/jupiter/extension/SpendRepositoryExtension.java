@@ -1,4 +1,4 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.db.repository.SpendRepository;
 import guru.qa.niffler.db.repository.SpendRepositoryHibernate;
@@ -22,7 +22,8 @@ public class SpendRepositoryExtension implements TestInstancePostProcessor {
                     case "jdbc" -> repository = new SpendRepositoryJdbc();
                     case "sjdbc" -> repository = new SpendRepositorySJdbc();
                     case "hibernate" -> repository = new SpendRepositoryHibernate();
-                    default -> throw new IllegalArgumentException("Unsupported repository environment: " + repositoryEnv);
+                    default ->
+                            throw new IllegalArgumentException("Unsupported repository environment: " + repositoryEnv);
                 }
 
                 field.set(o, repository);

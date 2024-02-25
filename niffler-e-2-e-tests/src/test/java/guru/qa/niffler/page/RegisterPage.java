@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
-public class RegisterPage {
+public class RegisterPage extends BasePage<RegisterPage> {
     private final SelenideElement
             subTitle = $(withText("Registration form")),
             userNameInput = $("[name='username']"),
@@ -17,6 +17,7 @@ public class RegisterPage {
             subTitleAfterRegister = $(withText("Congratulations! You've registered!")),
             loginButton = $("[href*='redirect']");
 
+    @Override
     @Step("Ожидание загрузки Register страницы приложения")
     public RegisterPage waitUntilLoaded() {
         subTitle.should(appear);

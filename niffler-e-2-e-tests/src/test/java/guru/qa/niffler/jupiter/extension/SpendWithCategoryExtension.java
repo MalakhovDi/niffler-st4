@@ -1,10 +1,9 @@
-package guru.qa.niffler.jupiter;
+package guru.qa.niffler.jupiter.extension;
 
 import guru.qa.niffler.jupiter.annotation.GenerateSpendWithCategory;
 import guru.qa.niffler.model.SpendJson;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
-
 
 import java.util.Date;
 import java.util.Optional;

@@ -7,10 +7,11 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
-public class PeoplePage {
+public class PeoplePage extends BasePage<PeoplePage> {
     private final PeopleTableElement peopleTableElement = new PeopleTableElement();
     private final HeaderMainPageElement headerMainPageElement = new HeaderMainPageElement();
 
+    @Override
     @Step("Ожидание загрузки страницы people")
     public PeoplePage waitUntilLoaded() {
         webdriver().shouldHave(urlContaining("people"));

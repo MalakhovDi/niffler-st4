@@ -9,12 +9,14 @@ import static com.codeborne.selenide.Selenide.$;
 
 public abstract class BasePage<T extends BasePage> {
 
-  protected final SelenideElement toaster = $(".Toastify__toast-body");
+    protected final SelenideElement toast = $("[class*='toast']");
 
-  @SuppressWarnings("unchecked")
-  @Step("")
-  public T checkMessage(Msg msg) {
-    toaster.shouldHave(text(msg.getMessage()));
-    return (T) this;
-  }
+    @SuppressWarnings("unchecked")
+    @Step("Check toast {msg.getMessage()}")
+    public T checkToastMessage(Msg msg) {
+        toast.shouldHave(text(msg.getMessage()));
+        return (T) this;
+    }
+
+    protected abstract T waitUntilLoaded();
 }

@@ -267,7 +267,7 @@ public class UserRepositoryJdbc implements UserRepository {
                  PreparedStatement authorityInsertPs = conn.prepareStatement(
                          "INSERT INTO \"authority\" (user_id, authority) VALUES (?, ?)");
                  PreparedStatement authorityDeletePs = conn.prepareStatement(
-                         "DELETE FROM \"authority\" WHERE user_id = ?");
+                         "DELETE FROM \"authority\" WHERE user_id = ?")
             ) {
                 userPs.setObject(1, pe.encode(user.getPassword()));
                 userPs.setBoolean(2, user.getEnabled());

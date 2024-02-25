@@ -8,19 +8,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum DataSourceProvider {
-  INSTANCE;
+    INSTANCE;
 
-  private static final Config cfg = Config.getInstance();
+    private static final Config cfg = Config.getInstance();
 
-  private final Map<Database, DataSource> store = new ConcurrentHashMap<>();
+    private final Map<Database, DataSource> store = new ConcurrentHashMap<>();
 
-  public DataSource dataSource(Database database) {
-    return store.computeIfAbsent(database, k -> {
-      PGSimpleDataSource ds = new PGSimpleDataSource();
-      ds.setURL(k.getUrl());
-      ds.setUser(cfg.jdbcUser());
-      ds.setPassword(cfg.jdbcPassword());
-      return ds;
-    });
-  }
+    public DataSource dataSource(Database database) {
+        return store.computeIfAbsent(database, k -> {
+            PGSimpleDataSource ds = new PGSimpleDataSource();
+            ds.setURL(k.getUrl());
+            ds.setUser(cfg.jdbcUser());
+            ds.setPassword(cfg.jdbcPassword());
+            return ds;
+        });
+    }
 }

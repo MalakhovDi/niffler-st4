@@ -4,23 +4,23 @@ import com.codeborne.selenide.Configuration;
 
 public class DockerConfig implements Config {
 
-  static final DockerConfig instance = new DockerConfig();
+    static final DockerConfig instance = new DockerConfig();
 
-  private DockerConfig() {
-  }
+    static {
+        Configuration.remote = "http://localhost:4444/wd/hub";
+        Configuration.browser = "chrome";
+    }
 
-  static {
-    Configuration.remote = "http://localhost:4444/wd/hub";
-    Configuration.browser = "chrome";
-  }
+    private DockerConfig() {
+    }
 
-  @Override
-  public String frontUrl() {
-    return "http://frontend.niffler.dc";
-  }
+    @Override
+    public String frontUrl() {
+        return "http://frontend.niffler.dc";
+    }
 
-  @Override
-  public String jdbcHost() {
-    return "niffler-all-db";
-  }
+    @Override
+    public String jdbcHost() {
+        return "niffler-all-db";
+    }
 }

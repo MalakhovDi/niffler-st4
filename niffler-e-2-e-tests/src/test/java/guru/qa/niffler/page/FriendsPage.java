@@ -7,10 +7,11 @@ import io.qameta.allure.Step;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.urlContaining;
 
-public class FriendsPage {
+public class FriendsPage extends BasePage<FriendsPage> {
     private final PeopleTableElement peopleTableElement = new PeopleTableElement();
     private final HeaderMainPageElement headerMainPageElement = new HeaderMainPageElement();
 
+    @Override
     @Step("Ожидание загрузки страницы friends")
     public FriendsPage waitUntilLoaded() {
         webdriver().shouldHave(urlContaining("friends"));
