@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
-public class LoginPage {
+public class LoginPage extends BasePage<LoginPage> {
     private final SelenideElement
 
             subTitle = $(withText("Please sign in")),
