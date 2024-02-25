@@ -1,22 +1,18 @@
 package guru.qa.niffler.page;
 
-import com.codeborne.selenide.SelenideElement;
+import guru.qa.niffler.page.message.SuccessMsg;
 import guru.qa.niffler.page_element.HeaderMainPageElement;
 import guru.qa.niffler.page_element.HistoryOfSpendingsElement;
 import guru.qa.niffler.page_element.StatsElement;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Selenide.$;
-
-public class MainPage extends BasePage<MainPage>{
+public class MainPage extends BasePage<MainPage> {
 
     private final HistoryOfSpendingsElement HistoryOfSpendingsElement = new HistoryOfSpendingsElement();
     private final HeaderMainPageElement headerMainPageElement = new HeaderMainPageElement();
     private final StatsElement statsElement = new StatsElement();
-    private final SelenideElement
-            toast = $("[class*='toast']");
 
+    @Override
     @Step("Ожидание загрузки главной страницы")
     public MainPage waitUntilLoaded() {
         HistoryOfSpendingsElement.waitUntilLoaded();
@@ -26,7 +22,7 @@ public class MainPage extends BasePage<MainPage>{
     @Step("Удалить Spending по названию {spendDescription}")
     public MainPage deleteSpendingByButtonDelete(String spendDescription) {
         HistoryOfSpendingsElement.deleteSpendingByButtonDeleteSpending(spendDescription);
-        toast.shouldHave(text("Spendings deleted"));
+        checkToastMessage(SuccessMsg.SPENDINGS_DELETED);
         return this;
     }
 

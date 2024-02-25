@@ -9,7 +9,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.UUID;
 
-public class SpendRepositoryJdbc implements SpendRepository{
+public class SpendRepositoryJdbc implements SpendRepository {
 
     private final DataSource spendDs = DataSourceProvider.INSTANCE.dataSource(Database.SPEND);
 

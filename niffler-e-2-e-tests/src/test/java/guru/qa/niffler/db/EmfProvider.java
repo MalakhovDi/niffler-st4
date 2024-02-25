@@ -11,27 +11,27 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum EmfProvider {
-  INSTANCE;
+    INSTANCE;
 
-  private static final Config cfg = Config.getInstance();
+    private static final Config cfg = Config.getInstance();
 
-  private final Map<Database, EntityManagerFactory> store = new ConcurrentHashMap<>();
+    private final Map<Database, EntityManagerFactory> store = new ConcurrentHashMap<>();
 
-  public EntityManagerFactory emf(Database database) {
-    return store.computeIfAbsent(database, k -> {
-      Map<String, String> settings = new HashMap<>();
-      settings.put("hibernate.connection.url", k.getUrl());
-      settings.put("hibernate.connection.user", cfg.jdbcUser());
-      settings.put("hibernate.connection.password", cfg.jdbcPassword());
-      settings.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-      settings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-      return new ThreadSafeEntityManagerFactory(
-          Persistence.createEntityManagerFactory("niffler-st4", settings)
-      );
-    });
-  }
+    public EntityManagerFactory emf(Database database) {
+        return store.computeIfAbsent(database, k -> {
+            Map<String, String> settings = new HashMap<>();
+            settings.put("hibernate.connection.url", k.getUrl());
+            settings.put("hibernate.connection.user", cfg.jdbcUser());
+            settings.put("hibernate.connection.password", cfg.jdbcPassword());
+            settings.put("hibernate.connection.driver_class", "org.postgresql.Driver");
+            settings.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+            return new ThreadSafeEntityManagerFactory(
+                    Persistence.createEntityManagerFactory("niffler-st4", settings)
+            );
+        });
+    }
 
-  public Collection<EntityManagerFactory> storedEmf() {
-    return store.values();
-  }
+    public Collection<EntityManagerFactory> storedEmf() {
+        return store.values();
+    }
 }
