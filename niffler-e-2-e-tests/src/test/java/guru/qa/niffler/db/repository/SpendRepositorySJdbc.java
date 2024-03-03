@@ -60,4 +60,13 @@ public class SpendRepositorySJdbc implements SpendRepository {
             return spend;
         });
     }
+
+    @Override
+    public void deleteAllSpendsInDb() {
+        spendTxt.execute(status -> {
+            spendTemplate.update("DELETE FROM \"spend\"");
+            spendTemplate.update("DELETE FROM \"category\"");
+            return null;
+        });
+    }
 }

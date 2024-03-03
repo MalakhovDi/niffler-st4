@@ -4,4 +4,6 @@ import guru.qa.niffler.db.model.SpendEntity;
 
 public interface SpendRepository {
     SpendEntity createSpend(SpendEntity spend);
+
+    void deleteAllSpendsInDb();
 }

@@ -16,7 +16,7 @@ public class ProfilePage extends BasePage<ProfilePage> {
 
     @Step("Ожидание загрузки страницы профиля")
     public ProfilePage waitUntilLoaded() {
-        webdriver().shouldHave(urlContaining("profile"));
+        webdriver().shouldHave(urlContaining("/profile"));
         return this;
     }
 

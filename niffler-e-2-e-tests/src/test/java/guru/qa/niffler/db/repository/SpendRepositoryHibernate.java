@@ -20,4 +20,8 @@ public class SpendRepositoryHibernate extends JpaService implements SpendReposit
         persist(SPEND, spend);
         return spend;
     }
+
+    @Override
+    public void deleteAllSpendsInDb() {
+    }
 }
