@@ -76,4 +76,31 @@ public class SpendRepositoryJdbc implements SpendRepository {
         }
         return spend;
     }
+
+    @Override
+    public void deleteAllSpendsInDb() {
+        try (Connection conn = spendDs.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement spendPs = conn.prepareStatement(
+                    "DELETE FROM \"spend\"");
+                 PreparedStatement categoryPs = conn.prepareStatement(
+                         "DELETE FROM \"category\"")
+            ) {
+
+                spendPs.executeUpdate();
+                categoryPs.executeUpdate();
+
+                conn.commit();
+            } catch (Exception e) {
+                conn.rollback();
+                throw e;
+            } finally {
+                conn.setAutoCommit(true);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

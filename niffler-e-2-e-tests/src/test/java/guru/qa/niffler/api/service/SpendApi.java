@@ -17,6 +17,12 @@ public interface SpendApi {
     Call<List<StatisticJson>> getStatistic(@Query("username") String username,
                                            @Query("userCurrency") CurrencyValues userCurrency);
 
+    @DELETE("/deleteSpends")
+    Call<Void> deleteSpends(@Query("username") String username, @Query("ids") List<String> ids);
+
     @PATCH("/editSpend")
     Call<SpendJson> editSpend(@Body SpendJson spend);
+
+    @GET("/spends")
+    Call<List<SpendJson>> getSpends(@Query("username") String username);
 }
