@@ -2,12 +2,16 @@ package guru.qa.niffler.page_element;
 
 import com.codeborne.selenide.SelenideElement;
 import guru.qa.niffler.db.model.CurrencyValues;
+import guru.qa.niffler.page.component.BaseComponent;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.$;
 
-public class ProfileInformationElement {
+public class ProfileInformationElement extends BaseComponent<ProfileInformationElement> {
+    public ProfileInformationElement() {
+        super($(".profile-content .main-content__section-avatar"));
+    }
     public ProfileInformationElement setFirstAndSurName(String firstName, String surName) {
         inputFirstName.setValue(firstName);
         inputSurName.setValue(surName);

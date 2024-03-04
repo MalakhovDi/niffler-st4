@@ -1,13 +1,17 @@
 package guru.qa.niffler.page_element;
 
 import com.codeborne.selenide.SelenideElement;
+import guru.qa.niffler.page.component.BaseComponent;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class HeaderMainPageElement {
+public class HeaderMainPageElement extends BaseComponent<HeaderMainPageElement> {
 
+    public HeaderMainPageElement() {
+        super($(".header"));
+    }
     private final SelenideElement
             main = $("[data-tooltip-id='main']"),
             friends = $("[data-tooltip-id='friends']"),

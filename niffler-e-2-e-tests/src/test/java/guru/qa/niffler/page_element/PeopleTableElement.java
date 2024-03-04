@@ -1,12 +1,18 @@
 package guru.qa.niffler.page_element;
 
+import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import guru.qa.niffler.page.component.BaseComponent;
 
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
-public class PeopleTableElement {
+public class PeopleTableElement extends BaseComponent<PeopleTableElement> {
+
+    public PeopleTableElement() {
+        super($(".people-content table"));
+    }
     private final SelenideElement
             peopleTable = $(".people-content tbody");
 
@@ -50,10 +56,7 @@ public class PeopleTableElement {
     }
 
     public PeopleTableElement verifyPendingInvitationToUser(String username) {
-        peopleTable.$$("tr")
-                .get(0)
-                .$$("td")
-                .get(1)
+        peopleTable.$$("tr").filter(Condition.partialText("Pending invitation")).first()
                 .shouldHave(text(username));
 
         return this;
@@ -61,7 +64,7 @@ public class PeopleTableElement {
 
     public PeopleTableElement verifyExistingDeclineInvitationBtn() {
         peopleTable.$$("tr")
-                .get(3)
+                .first()
                 .$(declineInvitationButton)
                 .shouldBe(visible);
 

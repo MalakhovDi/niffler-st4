@@ -1,6 +1,7 @@
 package guru.qa.niffler.page;
 
 import com.codeborne.selenide.SelenideElement;
+import guru.qa.niffler.api.client.SpendApiClient;
 import guru.qa.niffler.page.message.Msg;
 import io.qameta.allure.Step;
 
@@ -10,9 +11,10 @@ import static com.codeborne.selenide.Selenide.$;
 public abstract class BasePage<T extends BasePage> {
 
     protected final SelenideElement toast = $("[class*='toast']");
+    protected final SpendApiClient spendApiClient = new SpendApiClient();
 
     @SuppressWarnings("unchecked")
-    @Step("Check toast {msg.getMessage()}")
+    @Step("Check toast}")
     public T checkToastMessage(Msg msg) {
         toast.shouldHave(text(msg.getMessage()));
         return (T) this;

@@ -7,9 +7,12 @@ import guru.qa.niffler.jupiter.extension.BrowserExtension;
 import guru.qa.niffler.page.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.Locale;
+
 @ExtendWith({BrowserExtension.class})
 public abstract class BaseWebTest {
     static {
+        Configuration.browser = "firefox";
         Configuration.browserSize = "1980x1024";
     }
 
@@ -26,5 +29,5 @@ public abstract class BaseWebTest {
     protected final UserApiClient userApiClient = new UserApiClient();
     protected final FriendsApiClient friendsApi = new FriendsApiClient();
     protected final CurrencyApiClient currencyApiClient = new CurrencyApiClient();
-    protected final Faker faker = new Faker();
+    protected final Faker faker = new Faker(Locale.ENGLISH);
 }
