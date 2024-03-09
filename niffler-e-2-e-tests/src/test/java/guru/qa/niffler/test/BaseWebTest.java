@@ -3,6 +3,7 @@ package guru.qa.niffler.test;
 import com.codeborne.selenide.Configuration;
 import com.github.javafaker.Faker;
 import guru.qa.niffler.api.client.*;
+import guru.qa.niffler.config.Config;
 import guru.qa.niffler.jupiter.extension.BrowserExtension;
 import guru.qa.niffler.page.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,4 +31,6 @@ public abstract class BaseWebTest {
     protected final FriendsApiClient friendsApi = new FriendsApiClient();
     protected final CurrencyApiClient currencyApiClient = new CurrencyApiClient();
     protected final Faker faker = new Faker(Locale.ENGLISH);
+
+    protected static final Config CFG = Config.getInstance();
 }

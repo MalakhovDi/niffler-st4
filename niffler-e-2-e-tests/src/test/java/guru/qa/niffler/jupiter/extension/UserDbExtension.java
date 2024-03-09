@@ -5,19 +5,17 @@ import guru.qa.niffler.db.logging.JsonAllureAppender;
 import guru.qa.niffler.db.model.*;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.db.repository.UserRepositoryJdbc;
+import guru.qa.niffler.jupiter.annotation.ApiLogin;
 import guru.qa.niffler.jupiter.annotation.UserDb;
 import org.junit.jupiter.api.extension.*;
 import org.junit.platform.commons.support.AnnotationSupport;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class UserDbExtension implements BeforeEachCallback, ParameterResolver, AfterTestExecutionCallback {
     public static final ExtensionContext.Namespace NAMESPACE
             = ExtensionContext.Namespace.create(UserDbExtension.class);
-    private static final String USER_AUTH_KEY = "userAuth";
+    public static final String USER_AUTH_KEY = "userAuth";
     private static final String USER_KEY = "user";
     private final Faker faker = new Faker();
     private final UserRepository userRepository = new UserRepositoryJdbc();
@@ -25,57 +23,73 @@ public class UserDbExtension implements BeforeEachCallback, ParameterResolver, A
 
     @Override
     public void beforeEach(ExtensionContext extensionContext) throws Exception {
+
+        UserDb dbUserData = null;
+
         Optional<UserDb> dbUser = AnnotationSupport.findAnnotation(
                 extensionContext.getRequiredTestMethod(),
                 UserDb.class
         );
 
-        UserDb dbUserData = dbUser.get();
-        String userName = dbUserData.username().isEmpty() ? faker.name().firstName() : dbUserData.username();
-        String password = dbUserData.password().isEmpty()
-                ? String.valueOf(faker.number().numberBetween(10000, 99999))
-                : dbUserData.password();
-
-
-        UserAuthEntity userAuth = new UserAuthEntity();
-        UserEntity user = new UserEntity();
-
-        userAuth.setUsername(userName);
-        userAuth.setPassword(password);
-        userAuth.setEnabled(true);
-        userAuth.setAccountNonExpired(true);
-        userAuth.setAccountNonLocked(true);
-        userAuth.setCredentialsNonExpired(true);
-        userAuth.setAuthorities(Arrays.stream(Authority.values())
-                .map(e -> {
-                    AuthorityEntity ae = new AuthorityEntity();
-                    ae.setAuthority(e);
-                    return ae;
-                }).toList()
+        Optional<ApiLogin> apiLogin = AnnotationSupport.findAnnotation(
+                extensionContext.getRequiredTestMethod(),
+                ApiLogin.class
         );
 
-        user.setUsername(userName);
-        user.setCurrency(CurrencyValues.RUB);
+        if (dbUser.isPresent()) {
+            dbUserData = dbUser.get();
+        } else if (apiLogin.isPresent()) {
+            if (apiLogin.get().username().isEmpty() && apiLogin.get().password().isEmpty()) {
+                dbUserData = apiLogin.get().user();
+            }
+        }
 
-        userRepository.createInAuth(userAuth);
-        userRepository.createInUserdata(user);
+        if (!Objects.equals(null, dbUserData)) {
+            String userName = dbUserData.username().isEmpty() ? faker.name().firstName() : dbUserData.username();
+            String password = dbUserData.password().isEmpty()
+                    ? String.valueOf(faker.number().numberBetween(10000, 99999))
+                    : dbUserData.password();
 
-        jsonAllureAppender.logJson(userAuth, "created user in auth");
-        jsonAllureAppender.logJson(user, "created user in userdata");
+            UserAuthEntity userAuth = new UserAuthEntity();
+            UserEntity user = new UserEntity();
 
-        Map<String, Object> userEntities = new HashMap<>();
-        userEntities.put(USER_AUTH_KEY, userAuth);
-        userEntities.put(USER_KEY, user);
+            userAuth.setUsername(userName);
+            userAuth.setPassword(password);
+            userAuth.setEnabled(true);
+            userAuth.setAccountNonExpired(true);
+            userAuth.setAccountNonLocked(true);
+            userAuth.setCredentialsNonExpired(true);
+            userAuth.setAuthorities(Arrays.stream(Authority.values())
+                    .map(e -> {
+                        AuthorityEntity ae = new AuthorityEntity();
+                        ae.setAuthority(e);
+                        return ae;
+                    }).toList()
+            );
 
-        extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), userEntities);
+            user.setUsername(userName);
+            user.setCurrency(CurrencyValues.RUB);
+
+            userRepository.createInAuth(userAuth);
+            userRepository.createInUserdata(user);
+
+            jsonAllureAppender.logJson(userAuth, "created user in auth");
+            jsonAllureAppender.logJson(user, "created user in userdata");
+
+            Map<String, Object> userEntities = new HashMap<>();
+            userEntities.put(USER_AUTH_KEY, userAuth);
+            userEntities.put(USER_KEY, user);
+
+            extensionContext.getStore(NAMESPACE).put(extensionContext.getUniqueId(), userEntities);
+        }
     }
 
     @Override
     public void afterTestExecution(ExtensionContext extensionContext) throws Exception {
         Map<String, Object> userEntities = (Map<String, Object>) extensionContext
-                .getStore(UserDbExtension.NAMESPACE).get(extensionContext.getUniqueId());
+                .getStore(NAMESPACE).get(extensionContext.getUniqueId());
 
-        if (extensionContext.getRequiredTestMethod().getAnnotation(UserDb.class).deleteAfterTest()) {
+        if (!Objects.equals(null, userEntities)) {
             UserAuthEntity userAuth = (UserAuthEntity) userEntities.get(USER_AUTH_KEY);
             UserEntity user = (UserEntity) userEntities.get(USER_KEY);
 
