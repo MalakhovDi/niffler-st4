@@ -15,6 +15,7 @@ public class MainPage extends BasePage<MainPage> {
     private final HistoryOfSpendingsElement historyOfSpendingsElement = new HistoryOfSpendingsElement();
     private final HeaderMainPageElement headerMainPageElement = new HeaderMainPageElement();
     private final StatsElement statsElement = new StatsElement();
+    public static final String URL = CFG.frontUrl() + "/main";
 
     @Override
     @Step("Ожидание загрузки главной страницы")

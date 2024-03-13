@@ -7,7 +7,7 @@ import guru.qa.niffler.db.model.UserAuthEntity;
 import guru.qa.niffler.db.model.UserEntity;
 import guru.qa.niffler.db.repository.UserRepository;
 import guru.qa.niffler.db.repository.UserRepositoryHibernate;
-import guru.qa.niffler.jupiter.annotation.DbUser;
+import guru.qa.niffler.jupiter.annotation.UserDb;
 import guru.qa.niffler.utils.DataUtils;
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -31,13 +31,13 @@ public class CreateUserExtension implements BeforeEachCallback, AfterTestExecuti
 
   @Override
   public void beforeEach(ExtensionContext extensionContext) throws Exception {
-    Optional<DbUser> dbUserAnnotation = AnnotationSupport.findAnnotation(
+    Optional<UserDb> dbUserAnnotation = AnnotationSupport.findAnnotation(
         extensionContext.getRequiredTestMethod(),
-        DbUser.class
+            UserDb.class
     );
 
     if (dbUserAnnotation.isPresent()) {
-      DbUser dbUser = dbUserAnnotation.get();
+      UserDb dbUser = dbUserAnnotation.get();
       String username = dbUser.username().isEmpty()
           ? DataUtils.generateRandomUsername()
           : dbUser.username();
@@ -88,7 +88,7 @@ public class CreateUserExtension implements BeforeEachCallback, AfterTestExecuti
 
   @Override
   public boolean supportsParameter(ParameterContext parameterContext, ExtensionContext extensionContext) throws ParameterResolutionException {
-    return AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), DbUser.class)
+    return AnnotationSupport.findAnnotation(extensionContext.getRequiredTestMethod(), UserDb.class)
         .isPresent() &&
         parameterContext.getParameter().getType().isAssignableFrom(UserAuthEntity.class);
   }
